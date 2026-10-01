@@ -20,7 +20,10 @@
   },
   "main": "electron/main.cjs",
   "description": "Minimal focus timer",
-  "author": "Tiago Xavier",
+  "author": {
+    "name": "tiago-xavier-braga",
+    "email": "braga.tiagoxavier@gmail.com"
+  },
   "build": {
     "appId": "com.tiagoxavier.timerfocus",
     "productName": "Timer Focus",
@@ -50,7 +53,9 @@
         "deb"
       ],
       "icon": "build/icon.png",
-      "category": "Utility"
+      "category": "Utility",
+      "maintainer": "tiago-xavier-braga <braga.tiagoxavier@gmail.com>"
     }
-  }
+  },
+  "homepage": "https://github.com/tiago-xavier-braga/TimerFocus"
 }
