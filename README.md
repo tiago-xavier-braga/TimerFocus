@@ -24,7 +24,8 @@ hours went into each task.
 - **Always on top** — pin the window above everything else with one click.
 - **To-do with tracked time** — each task has a name and a color tag. While a
   task is selected, the time you count is added to it (`1.5h` = 1 hour 30
-  minutes), and it keeps adding up every time you come back to it.
+  minutes), and it keeps adding up every time you come back to it. Name and
+  tracked hours can be edited at any time.
 
 ## Why Timer Focus
 
@@ -73,7 +74,7 @@ the first run.
 | Reset the display | Circular-arrow button (task time is kept) |
 | Add a task | Type in **New task…** and press Enter; click the dot first to pick a color |
 | Select a task | Click it; click again to go back to free mode |
-| Rename a task | Double-click its name |
+| Edit a task (name, tracked hours) | Pencil icon on hover |
 | Change a task's color | Click its color dot |
 | Complete / remove | Checkbox / `×` on hover |
 | Always on top | Pin icon, top right |
@@ -105,4 +106,4 @@ artifacts.
 - `src/stopwatch.ts` — timestamp-based stopwatch (no drift) and time formatting
 - `src/ring.ts` — the ring animation: eased laps, braking and rewind
 - `src/main.ts` — controls, tasks, theme and always-on-top wiring
-- `src/modal.ts` — confirmation dialog
+- `src/modal.ts` — confirmation and edit-task dialogs

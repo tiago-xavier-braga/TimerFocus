@@ -1,7 +1,7 @@
-import { confirm } from "./modal";
+import { confirm, editPrompt } from "./modal";
 import { loadState, saveState, saveStateSync, setAlwaysOnTop, setNativeTheme, type AppState, type Task, type Theme } from "./native";
 import { Ring } from "./ring";
-import { Stopwatch, formatClock, formatHours } from "./stopwatch";
+import { MS_PER_HOUR, Stopwatch, formatClock, formatHours, toHours } from "./stopwatch";
 
 const PALETTE = ["#e0883a", "#e5584f", "#d4a72c", "#4caf7a", "#4a90d9", "#9b6bd6"];
 const TICK_MS = 250;
@@ -139,26 +139,19 @@ function cycleColor(task: Task): void {
   render();
 }
 
-function rename(task: Task, nameEl: HTMLElement): void {
-  nameEl.contentEditable = "true";
-  nameEl.focus();
-  getSelection()?.selectAllChildren(nameEl);
-  const finish = (commit: boolean) => {
-    nameEl.removeEventListener("keydown", onKey);
-    const name = nameEl.textContent?.trim();
-    if (commit && name) task.name = name;
-    save();
-    render();
-  };
-  const onKey = (e: KeyboardEvent) => {
-    if (e.key === "Enter") { e.preventDefault(); nameEl.blur(); }
-    if (e.key === "Escape") { nameEl.textContent = task.name; nameEl.blur(); }
-  };
-  nameEl.addEventListener("keydown", onKey);
-  nameEl.addEventListener("blur", () => finish(true), { once: true });
+// Hours are only written back when changed, so a rename doesn't round away counted time.
+async function editTask(task: Task): Promise<void> {
+  const hours = toHours(task.totalMs);
+  const edit = await editPrompt(task.name, hours);
+  if (!edit) return;
+  if (edit.name) task.name = edit.name;
+  if (edit.hours !== hours) task.totalMs = Math.round(edit.hours * MS_PER_HOUR);
+  save();
+  render();
 }
 
 const CHECK_SVG = '<svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>';
+const EDIT_SVG = '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>';
 const DEL_SVG = '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 
 function render(): void {
@@ -185,13 +178,17 @@ function render(): void {
       const name = document.createElement("span");
       name.className = "name";
       name.textContent = task.name;
-      name.title = "Double-click to rename";
-      name.ondblclick = (e) => { e.stopPropagation(); rename(task, name); };
 
       const hours = document.createElement("span");
       hours.className = "hours";
       hours.textContent = formatHours(task.totalMs);
       hoursEls.set(task.id, hours);
+
+      const edit = document.createElement("button");
+      edit.className = "edit";
+      edit.title = "Edit";
+      edit.innerHTML = EDIT_SVG;
+      edit.onclick = (e) => { e.stopPropagation(); void editTask(task); };
 
       const del = document.createElement("button");
       del.className = "del";
@@ -199,9 +196,9 @@ function render(): void {
       del.innerHTML = DEL_SVG;
       del.onclick = (e) => { e.stopPropagation(); void removeTask(task); };
 
-      li.append(check, dot, name, hours, del);
+      li.append(check, dot, name, hours, edit, del);
       li.onclick = () => {
-        if (task.done || name.isContentEditable) return;
+        if (task.done) return;
         void selectTask(task.id === activeId ? null : task.id);
       };
       return li;

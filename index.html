@@ -62,6 +62,18 @@
       </form>
     </dialog>
 
+    <dialog id="edit" class="modal">
+      <form method="dialog">
+        <p class="modal-title">Edit task</p>
+        <label class="field">Name<input id="edit-name" type="text" maxlength="80" required autocomplete="off" /></label>
+        <label class="field">Hours tracked<input id="edit-hours" type="number" min="0" step="any" required /></label>
+        <div class="modal-actions">
+          <button id="edit-cancel" type="button" class="btn">Cancel</button>
+          <button value="ok" class="btn primary">Save</button>
+        </div>
+      </form>
+    </dialog>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

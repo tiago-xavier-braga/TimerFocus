@@ -36,8 +36,14 @@ export function formatClock(ms: number): string {
   return [h, m, s].map((n) => String(n).padStart(2, "0")).join(":");
 }
 
+export const MS_PER_HOUR = 3_600_000;
+
+// 5_400_000 -> 1.5, rounded to 2 decimals
+export function toHours(ms: number): number {
+  return Math.round((ms / MS_PER_HOUR) * 100) / 100;
+}
+
 // 5_400_000 -> "1.5h", 900_000 -> "0.25h"
 export function formatHours(ms: number): string {
-  const hours = Math.round((ms / 3_600_000) * 100) / 100;
-  return `${hours}h`;
+  return `${toHours(ms)}h`;
 }

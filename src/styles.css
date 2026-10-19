@@ -146,7 +146,6 @@ body.running .ctrl.primary .i-pause { display: block; }
 .task:hover { background: var(--line); }
 .task.active { background: var(--surface); box-shadow: var(--shadow); }
 .task .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.task .name[contenteditable="true"] { outline: none; border-bottom: 1px solid var(--accent); white-space: normal; user-select: text; cursor: text; }
 .task .hours { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
 .task.done .name { color: var(--muted); text-decoration: line-through; }
 .task.done { cursor: default; }
@@ -159,15 +158,16 @@ body.running .ctrl.primary .i-pause { display: block; }
 .check svg { stroke-width: 3; }
 .task.done .check { background: var(--muted); border-color: var(--muted); color: var(--bg); }
 
-.del {
+.edit, .del {
   flex: none; width: 22px; height: 22px; padding: 5px;
   border-radius: 6px;
   color: var(--muted);
   opacity: 0;
   transition: opacity 0.15s ease;
 }
-.task:hover .del { opacity: 1; }
-.del:hover { color: var(--text); }
+.edit { margin-right: -6px; }
+.task:hover .edit, .task:hover .del { opacity: 1; }
+.edit:hover, .del:hover { color: var(--text); }
 
 .tasks:empty::after {
   content: "No tasks. The timer also works on its own.";
@@ -188,6 +188,15 @@ body.running .ctrl.primary .i-pause { display: block; }
 .modal-title { font-weight: 600; margin-bottom: 6px; }
 .modal-text { color: var(--muted); font-size: 13px; line-height: 1.45; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+
+.field { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; color: var(--muted); font-size: 12px; }
+.field input {
+  padding: 7px 10px;
+  border: 1px solid var(--line); border-radius: 8px; outline: none;
+  background: var(--bg); color: var(--text); font: inherit; font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+.field input:focus { border-color: var(--accent); }
 
 .btn { padding: 7px 14px; border-radius: 8px; transition: background-color 0.2s ease; }
 .btn:hover { background: var(--line); }
