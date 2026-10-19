@@ -69,7 +69,7 @@ svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width:
 
 /* Report mode: a smaller clock leaves room for the rows. */
 body.reporting .dial { width: min(150px, 46vw); }
-body.reporting .time { font-size: clamp(24px, 8vw, 30px); }
+body.reporting .readout { --time-size: clamp(24px, 8vw, 30px); }
 body.reporting .timer { gap: 12px; padding-bottom: 12px; }
 
 .ring { position: absolute; inset: 0; overflow: visible; }
@@ -77,13 +77,16 @@ body.reporting .timer { gap: 12px; padding-bottom: 12px; }
 .ring-arc { stroke: var(--accent); stroke-width: 5; transition: stroke 0.3s ease; }
 #ring-spin { transform-origin: 100px 100px; }
 
+/* The time sits on the exact center; the task label hangs below it without pushing it up. */
 .readout {
+  --time-size: clamp(30px, 11vw, 44px);
   position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  display: flex; align-items: center; justify-content: center;
 }
 
 .time {
-  font-size: clamp(30px, 11vw, 44px);
+  font-size: var(--time-size);
+  line-height: 1;
   transition: font-size 0.3s ease;
   font-weight: 300;
   letter-spacing: 0.02em;
@@ -91,6 +94,7 @@ body.reporting .timer { gap: 12px; padding-bottom: 12px; }
 }
 
 .active-task {
+  position: absolute; top: calc(50% + var(--time-size) / 2 + 8px);
   display: flex; align-items: center; gap: 6px;
   max-width: 70%;
   min-height: 18px;
