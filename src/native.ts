@@ -9,12 +9,20 @@ export interface Task {
   color: string;
   totalMs: number;
   done: boolean;
+  createdAt?: number; // missing on tasks created before the report existed
+}
+
+// Time counted per task id on one day; "" = no task selected.
+export interface DayLog {
+  date: string;
+  ms: Record<string, number>;
 }
 
 export interface AppState {
   tasks: Task[];
   theme: Theme | null; // null = follow the system
   pinned: boolean;
+  today: DayLog;
 }
 
 interface Bridge {
@@ -31,7 +39,7 @@ declare global {
   }
 }
 
-const DEFAULTS: AppState = { tasks: [], theme: null, pinned: false };
+const DEFAULTS: AppState = { tasks: [], theme: null, pinned: false, today: { date: "", ms: {} } };
 const KEY = "timer-focus";
 const bridge = window.timerFocus;
 

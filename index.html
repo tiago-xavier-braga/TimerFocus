@@ -9,6 +9,9 @@
   </head>
   <body>
     <header class="toolbar">
+      <button id="report" class="icon-btn" title="Today's report" aria-pressed="false">
+        <svg viewBox="0 0 24 24"><path d="M5 20v-7M12 20V5M19 20v-10"/></svg>
+      </button>
       <button id="pin" class="icon-btn" title="Always on top" aria-pressed="false">
         <svg viewBox="0 0 24 24"><path d="M8.5 3.5h7M10 3.5V9l-3.5 3.5v3h11v-3L14 9V3.5M12 15.5V21"/></svg>
       </button>
@@ -43,7 +46,9 @@
       </div>
     </main>
 
-    <section class="todo">
+    <section id="report-view" class="report" hidden></section>
+
+    <section id="todo" class="todo">
       <form id="add-form" class="add">
         <button id="add-color" type="button" class="dot" title="Tag color"></button>
         <input id="add-name" type="text" placeholder="New task…" maxlength="80" autocomplete="off" />

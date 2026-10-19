@@ -77,6 +77,7 @@ the first run.
 | Edit a task (name, tracked hours) | Pencil icon on hover |
 | Change a task's color | Click its color dot |
 | Complete / remove | Checkbox / trash icon on hover |
+| Today's report | Bar-chart icon, top right (click again to go back) |
 | Always on top | Pin icon, top right |
 | Switch theme | Sun/moon icon, top right |
 
@@ -106,4 +107,5 @@ artifacts.
 - `src/stopwatch.ts` — timestamp-based stopwatch (no drift) and time formatting
 - `src/ring.ts` — the ring animation: eased laps, braking and rewind
 - `src/main.ts` — controls, tasks, theme and always-on-top wiring
+- `src/report.ts` — today's time log and the report view
 - `src/modal.ts` — confirmation and edit-task dialogs

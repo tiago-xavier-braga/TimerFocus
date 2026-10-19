@@ -1,5 +1,6 @@
 import { confirm, editPrompt } from "./modal";
 import { loadState, saveState, saveStateSync, setAlwaysOnTop, setNativeTheme, type AppState, type Task, type Theme } from "./native";
+import { logTime, renderReport } from "./report";
 import { Ring } from "./ring";
 import { MS_PER_HOUR, Stopwatch, formatClock, formatHours, toHours } from "./stopwatch";
 
@@ -16,6 +17,9 @@ const addForm = $<HTMLFormElement>("add-form");
 const addName = $<HTMLInputElement>("add-name");
 const addColor = $("add-color");
 const pinBtn = $("pin");
+const reportBtn = $("report");
+const reportEl = $("report-view");
+const todoEl = $("todo");
 
 const sw = new Stopwatch();
 const ring = new Ring(
@@ -33,12 +37,15 @@ const hoursEls = new Map<string, HTMLElement>();
 
 const activeTask = (): Task | undefined => state.tasks.find((t) => t.id === activeId);
 
-// Moves time counted since the last credit into the active task.
+// Moves time counted since the last credit into the active task and today's log.
 function credit(): void {
   const elapsed = sw.elapsed();
-  const task = activeTask();
-  if (task) task.totalMs += elapsed - credited;
+  const delta = elapsed - credited;
   credited = elapsed;
+  if (delta <= 0) return;
+  const task = activeTask();
+  if (task) task.totalMs += delta;
+  logTime(state, task?.id ?? "", delta);
 }
 
 function save(): void {
@@ -53,6 +60,7 @@ function tick(): void {
   timeEl.textContent = formatClock(sw.elapsed());
   const task = activeTask();
   if (task) hoursEls.get(task.id)!.textContent = formatHours(task.totalMs);
+  if (!reportEl.hidden) renderReport(reportEl, state);
   if (Date.now() - lastSave > AUTOSAVE_MS) save();
 }
 
@@ -227,7 +235,7 @@ addForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const name = addName.value.trim();
   if (!name) return;
-  state.tasks.push({ id: crypto.randomUUID(), name, color: PALETTE[addColorIndex], totalMs: 0, done: false });
+  state.tasks.push({ id: crypto.randomUUID(), name, color: PALETTE[addColorIndex], totalMs: 0, done: false, createdAt: Date.now() });
   addName.value = "";
   setAddColor(addColorIndex + 1);
   save();
@@ -262,6 +270,18 @@ pinBtn.addEventListener("click", () => {
   state.pinned = !state.pinned;
   applyPin();
   save();
+});
+
+// ---------- Report ----------
+
+// Swaps the to-do list for today's report and back.
+reportBtn.addEventListener("click", () => {
+  const open = reportEl.hidden;
+  reportEl.hidden = !open;
+  todoEl.hidden = open;
+  reportBtn.setAttribute("aria-pressed", String(open));
+  document.body.classList.toggle("reporting", open);
+  if (open) renderReport(reportEl, state);
 });
 
 // ---------- Startup ----------

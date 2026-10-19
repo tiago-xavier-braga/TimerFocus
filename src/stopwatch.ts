@@ -36,6 +36,15 @@ export function formatClock(ms: number): string {
   return [h, m, s].map((n) => String(n).padStart(2, "0")).join(":");
 }
 
+// 5_400_000 -> "1h 30m", 300_000 -> "5m", 20_000 -> "20s"
+export function formatDuration(ms: number): string {
+  const total = Math.floor(ms / 1000);
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  if (h) return `${h}h ${String(m).padStart(2, "0")}m`;
+  return m ? `${m}m` : `${total % 60}s`;
+}
+
 export const MS_PER_HOUR = 3_600_000;
 
 // 5_400_000 -> 1.5, rounded to 2 decimals

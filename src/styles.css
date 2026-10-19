@@ -25,6 +25,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; }
+[hidden] { display: none !important; }
 
 html, body { height: 100%; }
 
@@ -54,7 +55,7 @@ svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width:
   transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 }
 .icon-btn:hover { color: var(--text); background: var(--line); }
-#pin[aria-pressed="true"] { color: var(--accent); }
+#pin[aria-pressed="true"], #report[aria-pressed="true"] { color: var(--accent); }
 #pin svg { transform: rotate(45deg); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
 #pin[aria-pressed="true"] svg { transform: none; }
 #theme .moon { display: none; }
@@ -64,7 +65,12 @@ svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width:
 /* Timer */
 .timer { display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 4px 24px 18px; }
 
-.dial { position: relative; width: min(240px, 72vw); aspect-ratio: 1; }
+.dial { position: relative; width: min(240px, 72vw); aspect-ratio: 1; transition: width 0.3s ease; }
+
+/* Report mode: a smaller clock leaves room for the rows. */
+body.reporting .dial { width: min(150px, 46vw); }
+body.reporting .time { font-size: clamp(24px, 8vw, 30px); }
+body.reporting .timer { gap: 12px; padding-bottom: 12px; }
 
 .ring { position: absolute; inset: 0; overflow: visible; }
 .ring-track { stroke: var(--track); stroke-width: 5; }
@@ -78,6 +84,7 @@ svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width:
 
 .time {
   font-size: clamp(30px, 11vw, 44px);
+  transition: font-size 0.3s ease;
   font-weight: 300;
   letter-spacing: 0.02em;
   font-variant-numeric: tabular-nums;
@@ -174,6 +181,45 @@ body.running .ctrl.primary .i-pause { display: block; }
   display: block; padding: 8px; color: var(--muted); font-size: 12px; text-align: center;
 }
 
+/* Report */
+.report {
+  flex: 1; min-height: 0;
+  display: flex; flex-direction: column;
+  border-top: 1px solid var(--line);
+  padding: 14px 16px 0;
+  container-type: inline-size;
+}
+.report-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.report-title { font-weight: 600; }
+.report-total { font-size: 20px; font-weight: 300; font-variant-numeric: tabular-nums; }
+.report-summary { min-height: 16px; margin: 2px 0 8px; color: var(--muted); font-size: 12px; }
+
+.report-list { flex: 1; overflow-y: auto; list-style: none; padding: 0 0 12px; }
+.report-row { position: relative; display: grid; grid-template-columns: 10px minmax(0, 1fr) auto auto; align-items: center; column-gap: 10px; padding: 8px 0 10px; }
+.report-row i { flex: none; width: 10px; height: 10px; border-radius: 50%; }
+.report-row .name { grid-column: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.report-row.done .name { color: var(--muted); text-decoration: line-through; }
+.report-row .tag { grid-column: 3; padding: 1px 6px; border-radius: 6px; background: var(--line); color: var(--muted); font-size: 11px; }
+.report-row .times { grid-column: 4; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.report-row .today { font-size: 12px; }
+.report-row .total { color: var(--muted); font-size: 11px; }
+
+/* Wide enough: today and total on one line, so rows stay short. */
+@container (min-width: 360px) {
+  .report-row .times { flex-direction: row; align-items: baseline; gap: 6px; }
+  .report-row .total::before { content: "·"; margin-right: 6px; }
+}
+
+/* Narrow: the "new" tag shrinks to a dot so the name keeps its room. */
+@container (max-width: 300px) {
+  .report-row .tag { width: 6px; height: 6px; padding: 0; border-radius: 50%; background: var(--accent); font-size: 0; }
+}
+.report-row .bar { position: absolute; left: 20px; bottom: 3px; height: 3px; max-width: calc(100% - 20px); border-radius: 2px; background: var(--accent); opacity: 0.55; }
+.report-list:empty::after {
+  content: "Nothing tracked today yet.";
+  display: block; padding: 8px; color: var(--muted); font-size: 12px; text-align: center;
+}
+
 /* Modal */
 .modal {
   margin: auto;
@@ -208,6 +254,6 @@ body.running .ctrl.primary .i-pause { display: block; }
   to { opacity: 1; transform: scale(1); }
 }
 
-.tasks::-webkit-scrollbar { width: 6px; }
-.tasks::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
-.tasks::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+.tasks::-webkit-scrollbar, .report-list::-webkit-scrollbar { width: 6px; }
+.tasks::-webkit-scrollbar-thumb, .report-list::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+.tasks::-webkit-scrollbar-thumb:hover, .report-list::-webkit-scrollbar-thumb:hover { background: var(--muted); }
