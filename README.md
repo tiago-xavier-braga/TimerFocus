@@ -76,7 +76,7 @@ the first run.
 | Select a task | Click it; click again to go back to free mode |
 | Edit a task (name, tracked hours) | Pencil icon on hover |
 | Change a task's color | Click its color dot |
-| Complete / remove | Checkbox / `×` on hover |
+| Complete / remove | Checkbox / trash icon on hover |
 | Always on top | Pin icon, top right |
 | Switch theme | Sun/moon icon, top right |
 

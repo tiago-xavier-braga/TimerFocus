@@ -151,8 +151,8 @@ async function editTask(task: Task): Promise<void> {
 }
 
 const CHECK_SVG = '<svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>';
-const EDIT_SVG = '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>';
-const DEL_SVG = '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+const EDIT_SVG = '<svg viewBox="0 0 24 24"><path d="M16.8 3.8a2.4 2.4 0 0 1 3.4 3.4L8.7 18.7 3.5 20.5l1.8-5.2z"/><path d="M14.8 5.8l3.4 3.4"/></svg>';
+const DEL_SVG = '<svg viewBox="0 0 24 24"><path d="M4 6.5h16M9.5 6.5v-2h5v2M6.2 6.5l.9 12.6a1.6 1.6 0 0 0 1.6 1.4h6.6a1.6 1.6 0 0 0 1.6-1.4l.9-12.6M10 10.5v6M14 10.5v6"/></svg>';
 
 function render(): void {
   hoursEls.clear();
