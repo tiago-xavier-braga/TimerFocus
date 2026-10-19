@@ -1,14 +1,14 @@
 # Timer Focus
 
 <p align="center">
-  <img src="docs/media/dark.png" alt="Timer Focus in dark theme: a count-up clock centered inside a spinning orange ring, with a task list below" width="280" />
+  <img src="docs/media/dark.png" alt="Timer Focus in dark theme: the clock at 00:25:17 centered inside a spinning orange ring, with the selected task under it and a task list below, one row showing its edit and delete icons" width="280" />
   &nbsp;&nbsp;
   <img src="docs/media/light.png" alt="Timer Focus in light theme with the same layout" width="280" />
 </p>
 
-A minimal count-up focus timer for the desktop, with a spinning eased ring,
-light/dark theme, always-on-top and a tiny to-do list that tracks how many
-hours went into each task.
+A minimal count-up focus timer for the desktop, with a spinning ring,
+light/dark theme, always-on-top, a tiny to-do list that tracks how many hours
+went into each task, and a report of what you worked on today.
 
 > **Status:** a personal study project, built with Electron. Runs on Windows
 > and Linux.
@@ -17,15 +17,25 @@ hours went into each task.
 
 - **Count-up timer** — starts at `00:00:00` and shows hours, minutes and
   seconds. Play, pause and reset.
-- **Eased ring** — the arc around the clock spins with an ease-in-out on every
-  lap, glides to a stop when paused and rewinds when reset.
+- **Living ring** — while the clock runs, the arc around it never stops: it
+  turns at a steady pace while stretching and shrinking. It eases in when you
+  press play, glides to a stop when paused and rewinds when reset.
 - **Light and dark theme** — follows the system by default; your choice is
   remembered.
 - **Always on top** — pin the window above everything else with one click.
 - **To-do with tracked time** — each task has a name and a color tag. While a
   task is selected, the time you count is added to it (`1.5h` = 1 hour 30
-  minutes), and it keeps adding up every time you come back to it. Name and
-  tracked hours can be edited at any time.
+  minutes), and it keeps adding up every time you come back to it. The pencil
+  on each row edits the name or corrects the tracked hours.
+- **Today's report** — one click swaps the list for today's report: every task
+  you created or worked on today, with today's time, its all-time total and
+  the day's total. Time counted with no task selected is listed too.
+
+<p align="center">
+  <img src="docs/media/report.png" alt="Today's report: total 2h 08m, then Review PR 40m today of 1.5h total, Plan sprint 30m, Ring design 25m and Write release notes 21m, each with a bar showing its share" width="280" />
+  &nbsp;&nbsp;
+  <img src="docs/media/edit.png" alt="The Edit task dialog with Name and Hours tracked fields and Cancel and Save buttons" width="280" />
+</p>
 
 ## Why Timer Focus
 
