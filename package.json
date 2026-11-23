@@ -57,5 +57,9 @@
       "maintainer": "tiago-xavier-braga <braga.tiagoxavier@gmail.com>"
     }
   },
-  "homepage": "https://github.com/tiago-xavier-braga/TimerFocus"
+  "homepage": "https://github.com/tiago-xavier-braga/TimerFocus",
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/core": "^8.5.3"
+  }
 }
